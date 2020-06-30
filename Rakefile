@@ -9,24 +9,31 @@ namespace :greeting do
       puts "hello from Rake!"
     end
   
-    desc 'outputs hola to the terminal'
+  desc 'outputs hola to the terminal'
     task :hola do
       puts "hola de Rake!"
     end
   end
 
-  desc "exits"
-  task :console do
-    puts "rake aborted!"
-  end
+desc 'drop into the Pry console'
+task :console => :environment do
+  Pry.start
+end
 
-  task :environment do
-    require_relative './config/environment'
-  end
+task :environment do
+  require_relative './config/environment'
+end
 
+#invokes the :environment task as a dependency 
 namespace :db do
   desc 'migrate changes to your database'
+  # create the students table in the database
   task :migrate => :environment do
     Student.create_table
+  end
+  # seeds the database with dummy data from a seed file
+  desc 'seed the database with some dummy data'
+  task :seed do
+    require_relative './db/seeds.rb'
   end
 end
