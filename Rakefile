@@ -15,6 +15,18 @@ namespace :greeting do
     end
   end
 
+  desc "exits"
   task :console do
     puts "rake aborted!"
   end
+
+  task :environment do
+    require_relative './config/environment'
+  end
+
+namespace :db do
+  desc 'migrate changes to your database'
+  task :migrate => :environment do
+    Student.create_table
+  end
+end
